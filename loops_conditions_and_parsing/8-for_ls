@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Display directory entries without the prefix before the first dash
+
+shopt -s nullglob
 
 for file in *
 do
