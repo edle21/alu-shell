@@ -1,5 +1,5 @@
-
 #!/usr/bin/env bash
+# Display numbers and superstitious messages
 
 number=1
 
@@ -21,4 +21,3 @@ do
 
     number=$((number + 1))
 done
-
