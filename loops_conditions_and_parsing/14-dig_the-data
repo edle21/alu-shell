@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
-# Count visitors by IP address and HTTP status code
+# Count occurrences of each IP address and HTTP status code
 
-awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -rn | awk '{print $1, $2, $3}'
+awk 'NF >= 9 && $1 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $9 ~ /^[0-9][0-9][0-9]$/ {print $1, $9}' apache-access.log |
+sort |
+uniq -c |
+sort -k1,1nr -k2,2 -k3,3 |
+awk '{print $1, $2, $3}'
