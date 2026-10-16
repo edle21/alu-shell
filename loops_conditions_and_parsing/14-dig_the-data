@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-# Count visitors by IP address and HTTP status code
-awk '{print $1, $9}' | sort | uniq -c | sort -rn
+# Count occurrences by IP address and HTTP status code
+awk 'NF >= 9 && $9 ~ /^[0-9][0-9][0-9]$/ {print $1, $9}' | sort | uniq -c | sort -rn | awk '{printf "%7d %s %s\n", $1, $2, $3}'
