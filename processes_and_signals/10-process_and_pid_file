@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
+# Display messages indefinitely and handle signals using a PID file
 
-echo $$ > /var/run/myscript.pid
+PIDFILE="/var/run/myscript.pid"
+
+echo "$$" > "$PIDFILE"
+
+cleanup() {
+    rm -f "$PIDFILE"
+    exit 0
+}
+
+handle_term() {
+    echo "I hate the kill command"
+    cleanup
+}
 
 trap 'echo "Y U no love me?!"' SIGINT
-trap 'echo "I hate the kill command"; rm -f /var/run/myscript.pid; exit' SIGTERM
-trap 'rm -f /var/run/myscript.pid; exit' SIGQUIT
+trap handle_term SIGTERM
+trap cleanup SIGQUIT
 
 while true
 do
