@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Manage the manage_my_process background process
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PIDFILE="/var/run/my_process.pid"
+
+start_process() {
+    "$SCRIPT_DIR/manage_my_process" &
+    echo $! > "$PIDFILE"
+}
+
+stop_process() {
+    if [ -f "$PIDFILE" ]; then
+        pid=$(cat "$PIDFILE")
+        kill "$pid" 2>/dev/null
+        rm -f "$PIDFILE"
+    fi
+}
+
+case "$1" in
+    start)
+        start_process
+        echo "manage_my_process started"
+        ;;
+    stop)
+        stop_process
+        echo "manage_my_process stopped"
+        ;;
+    restart)
+        stop_process
+        start_process
+        echo "manage_my_process restarted"
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        exit 1
+        ;;
+esac
